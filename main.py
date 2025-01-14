@@ -61,6 +61,13 @@ def main():
                 print("Game over!")
                 return  # Exit the program
 
+            # Check for collisions between shots and asteroids
+            for shot in shots:
+                if shot.collides_with(asteroid):
+                    print(f"Asteroid destroyed at {asteroid.position}!")
+                    asteroid.kill()  # Remove the asteroid
+                    shot.kill()  # Remove the shot
+
         # Fill the screen with a solid black color
         screen.fill((0, 0, 0))  # RGB for black
 
