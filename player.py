@@ -24,11 +24,16 @@ class Player(CircleShape):
     def rotate(self, dt):
         self.rotation += PLAYER_TURN_SPEED * dt
 
+    def move(self, dt, reverse=False):
+        forward = pygame.Vector2(0, 1).rotate(self.rotation)
+        direction = -1 if reverse else 1  # Reverse the direction for backward movement
+        self.position += forward * PLAYER_SPEED * dt * direction
+
     # Override the draw method
     def draw(self, screen):
         pygame.draw.polygon(screen, "white", self.triangle(), 2)
 
-    # Sub-classes must override the update method
+    # Update method to handle input
     def update(self, dt):
         keys = pygame.key.get_pressed()
 
@@ -36,3 +41,7 @@ class Player(CircleShape):
             self.rotate(-dt)  # Rotate left
         if keys[pygame.K_d]:
             self.rotate(dt)  # Rotate right
+        if keys[pygame.K_w]:
+            self.move(dt)  # Move forward
+        if keys[pygame.K_s]:
+            self.move(dt, reverse=True)  # Move backward

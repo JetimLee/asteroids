@@ -2,6 +2,13 @@ import pygame
 from constants import *
 from player import Player  # Import the Player class
 
+# Create groups for updatable and drawable objects
+updatable = pygame.sprite.Group()
+drawable = pygame.sprite.Group()
+
+# Add static containers field to the Player class
+Player.containers = (updatable, drawable)
+
 
 def main():
     # Initialize pygame
@@ -30,14 +37,16 @@ def main():
             if event.type == pygame.QUIT:
                 return  # Exit the game loop
 
-        # Update the player's state
-        player.update(dt)
+        # Update all updatable objects
+        for obj in updatable:
+            obj.update(dt)
 
         # Fill the screen with a solid black color
         screen.fill((0, 0, 0))  # RGB for black
 
-        # Draw the player
-        player.draw(screen)
+        # Draw all drawable objects
+        for obj in drawable:
+            obj.draw(screen)
 
         # Refresh the display
         pygame.display.flip()
