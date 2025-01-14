@@ -12,6 +12,7 @@ class Player(CircleShape):
 
         # Initialize rotation
         self.rotation = 0
+        self.shoot_timer = 0  # Timer to manage shooting cooldown
 
     # The triangle method to calculate the player's shape
     def triangle(self):
@@ -31,6 +32,9 @@ class Player(CircleShape):
         self.position += forward * PLAYER_SPEED * dt * direction
 
     def shoot(self):
+        if self.shoot_timer > 0:
+            return  # Prevent shooting if the timer is active
+
         # Get the front tip of the triangle
         front_tip = self.triangle()[
             0
@@ -43,12 +47,19 @@ class Player(CircleShape):
         # Create a new shot at the front tip of the triangle
         Shot(front_tip.x, front_tip.y, velocity)
 
+        # Reset the shoot timer
+        self.shoot_timer = PLAYER_SHOOT_COOLDOWN
+
     # Override the draw method
     def draw(self, screen):
         pygame.draw.polygon(screen, "white", self.triangle(), 2)
 
     # Update method to handle input
     def update(self, dt):
+        # Decrease the shoot timer
+        if self.shoot_timer > 0:
+            self.shoot_timer -= dt
+
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_a]:
