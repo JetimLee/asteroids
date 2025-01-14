@@ -49,6 +49,12 @@ def main():
         for obj in updatable:
             obj.update(dt)
 
+        # Check for collisions between player and asteroids
+        for asteroid in asteroids:
+            if player.collides_with(asteroid):
+                print("Game over!")
+                return  # Exit the program
+
         # Fill the screen with a solid black color
         screen.fill((0, 0, 0))  # RGB for black
 
