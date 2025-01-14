@@ -65,7 +65,7 @@ def main():
             for shot in shots:
                 if shot.collides_with(asteroid):
                     print(f"Asteroid destroyed at {asteroid.position}!")
-                    asteroid.kill()  # Remove the asteroid
+                    asteroid.split()  # Call the split method instead of kill
                     shot.kill()  # Remove the shot
 
         # Fill the screen with a solid black color
