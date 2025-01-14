@@ -1,13 +1,18 @@
 import pygame
 from constants import *
 from player import Player  # Import the Player class
+from asteroid import Asteroid  # Import the Asteroid class
+from asteroidfield import AsteroidField  # Import the AsteroidField class
 
-# Create groups for updatable and drawable objects
+# Create groups for updatable, drawable, and asteroid objects
 updatable = pygame.sprite.Group()
 drawable = pygame.sprite.Group()
+asteroids = pygame.sprite.Group()
 
-# Add static containers field to the Player class
+# Add static containers field to the Player, Asteroid, and AsteroidField classes
 Player.containers = (updatable, drawable)
+Asteroid.containers = (asteroids, updatable, drawable)  # Asteroids group included
+AsteroidField.containers = (updatable,)  # Only updatable
 
 
 def main():
@@ -29,6 +34,9 @@ def main():
 
     # Instantiate the Player object
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, PLAYER_RADIUS)
+
+    # Create the AsteroidField object
+    asteroid_field = AsteroidField()  # Handles spawning and managing asteroids
 
     # Main game loop
     while True:
