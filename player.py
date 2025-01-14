@@ -1,6 +1,7 @@
 from circleshape import CircleShape
 import pygame
 from constants import *
+from shot import Shot  # Import the Shot class
 
 
 # Base class for player objects
@@ -29,6 +30,19 @@ class Player(CircleShape):
         direction = -1 if reverse else 1  # Reverse the direction for backward movement
         self.position += forward * PLAYER_SPEED * dt * direction
 
+    def shoot(self):
+        # Get the front tip of the triangle
+        front_tip = self.triangle()[
+            0
+        ]  # The first point in the triangle is the front tip
+
+        # Calculate the velocity of the shot
+        forward = pygame.Vector2(0, 1).rotate(self.rotation)  # Forward direction
+        velocity = forward * PLAYER_SHOOT_SPEED  # Scale up velocity
+
+        # Create a new shot at the front tip of the triangle
+        Shot(front_tip.x, front_tip.y, velocity)
+
     # Override the draw method
     def draw(self, screen):
         pygame.draw.polygon(screen, "white", self.triangle(), 2)
@@ -45,3 +59,5 @@ class Player(CircleShape):
             self.move(dt)  # Move forward
         if keys[pygame.K_s]:
             self.move(dt, reverse=True)  # Move backward
+        if keys[pygame.K_SPACE]:
+            self.shoot()  # Fire a shot

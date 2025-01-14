@@ -3,15 +3,18 @@ from constants import *
 from player import Player  # Import the Player class
 from asteroid import Asteroid  # Import the Asteroid class
 from asteroidfield import AsteroidField  # Import the AsteroidField class
+from shot import Shot  # Import the Shot class
 
-# Create groups for updatable, drawable, and asteroid objects
+# Create groups for updatable, drawable, asteroid objects, and shots
 updatable = pygame.sprite.Group()
 drawable = pygame.sprite.Group()
 asteroids = pygame.sprite.Group()
+shots = pygame.sprite.Group()
 
 # Add static containers field to the Player, Asteroid, and AsteroidField classes
 Player.containers = (updatable, drawable)
-Asteroid.containers = (asteroids, updatable, drawable)  # Asteroids group included
+Asteroid.containers = (asteroids, updatable, drawable)
+Shot.containers = (shots, updatable, drawable)  # Shots included in relevant groups
 AsteroidField.containers = (updatable,)  # Only updatable
 
 
@@ -44,6 +47,9 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return  # Exit the game loop
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    player.shoot()  # Call the shoot method when SPACE is pressed
 
         # Update all updatable objects
         for obj in updatable:
